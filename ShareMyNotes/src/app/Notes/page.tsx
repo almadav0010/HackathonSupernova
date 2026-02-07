@@ -21,6 +21,7 @@ export default function NotesPage() {
     const saved = localStorage.getItem(storageKey)
     if (saved) setContent(saved)
     setIsMounted(true)
+    // reload when storageKey changes (navigate to different lecture)
   }, [storageKey])
 
   // Auto-save to localStorage
@@ -29,7 +30,7 @@ export default function NotesPage() {
     try {
       localStorage.setItem(storageKey, content)
     } catch (e) {
-      // ignore
+      // ignore storage errors
     }
   }, [content, isMounted, storageKey])
 
