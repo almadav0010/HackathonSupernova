@@ -67,14 +67,17 @@ export default function NotesPage() {
                   remarkPlugins={[remarkMath]}
                   rehypePlugins={[rehypeKatex]}
                   components={{
-                    p: ({ node, ...props }) => <p className="text-text-primary mb-4" {...props} />,
-                    h1: ({ node, ...props }) => <h1 className="text-3xl font-bold text-text-primary mb-4" {...props} />,
-                    h2: ({ node, ...props }) => <h2 className="text-2xl font-bold text-text-primary mb-3" {...props} />,
-                    h3: ({ node, ...props }) => <h3 className="text-xl font-bold text-text-primary mb-2" {...props} />,
-                    code: ({ node, inline, ...props }) => inline 
-                      ? <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono" {...props} />
-                      : <code className="block bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props} />,
-                    pre: ({ node, ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto" {...props} />,
+                    p: ({ ...props }) => <p className="text-text-primary mb-4" {...props} />,
+                    h1: ({ ...props }) => <h1 className="text-3xl font-bold text-text-primary mb-4" {...props} />,
+                    h2: ({ ...props }) => <h2 className="text-2xl font-bold text-text-primary mb-3" {...props} />,
+                    h3: ({ ...props }) => <h3 className="text-xl font-bold text-text-primary mb-2" {...props} />,
+                    code: ({ className, children, ...props }) => {
+                      const isInline = !className
+                      return isInline 
+                        ? <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono" {...props}>{children}</code>
+                        : <code className="block bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props}>{children}</code>
+                    },
+                    pre: ({ ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto" {...props} />,
                   }}
                 >
                   {content}

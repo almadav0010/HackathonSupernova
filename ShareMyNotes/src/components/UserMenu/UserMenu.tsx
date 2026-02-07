@@ -92,7 +92,7 @@ export function UserMenu({ userEmail, userName }: UserMenuProps) {
 
           {/* Menu Items */}
           <div className="py-1">
-            <MenuItem href="/upload?tab=my-notes" icon="folder" label="Uploaded Notes" onClick={() => setIsOpen(false)} />
+            <MenuItem href="/upload?tab=my-notes" icon="folder" label="Saved Notes" onClick={() => setIsOpen(false)} />
             <MenuItem href="/upload" icon="upload" label="Upload New" onClick={() => setIsOpen(false)} />
             <MenuDivider />
             <MenuItem href="/settings" icon="settings" label="Settings" onClick={() => setIsOpen(false)} />

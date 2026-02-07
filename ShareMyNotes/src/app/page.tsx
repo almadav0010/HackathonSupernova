@@ -106,7 +106,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="px-6 py-8 border-t border-border mt-16">
         <div className="max-w-6xl mx-auto text-center text-text-tertiary">
-          <p>© 2026 {appName}. Built with ❤️ at Hackathon.</p>
+          <p>© 2026 {appName}. Built with ❤️ at Supernova.</p>
         </div>
       </footer>
     </div>

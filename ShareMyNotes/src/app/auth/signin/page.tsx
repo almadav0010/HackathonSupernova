@@ -52,7 +52,7 @@ export default function SignInPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${redirectUrl}/auth/callback?redirect=${redirect}`,
+          redirectTo: `${redirectUrl}/auth/callback?redirect=/home`,
         },
       })
 

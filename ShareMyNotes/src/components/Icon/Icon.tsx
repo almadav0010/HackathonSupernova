@@ -20,6 +20,7 @@ import {
   FiPlus,
   FiChevronRight,
   FiChevronLeft,
+  FiArrowLeft,
   FiSend,
   FiFile,
   FiFileText,
@@ -39,6 +40,10 @@ import {
   FiClock,
   FiGrid,
   FiList,
+  FiZap,
+  FiBarChart2,
+  FiRefreshCw,
+  FiSave,
 } from 'react-icons/fi'
 
 const icons = {
@@ -61,6 +66,7 @@ const icons = {
   plus: FiPlus,
   'chevron-right': FiChevronRight,
   'chevron-left': FiChevronLeft,
+  'arrow-left': FiArrowLeft,
   send: FiSend,
   file: FiFile,
   'file-text': FiFileText,
@@ -80,6 +86,10 @@ const icons = {
   clock: FiClock,
   grid: FiGrid,
   list: FiList,
+  zap: FiZap,
+  'bar-chart': FiBarChart2,
+  refresh: FiRefreshCw,
+  save: FiSave,
 }
 
 export type IconName = keyof typeof icons

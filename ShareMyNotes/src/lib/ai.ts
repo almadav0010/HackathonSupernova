@@ -1,5 +1,5 @@
 /**
- * AI Service for Note Analysis
+ * AI Service for Note Analysis & Summarization
  * Using Google Gemini for large context window (1M tokens)
  */
 
@@ -12,6 +12,17 @@ export interface NoteAnalysisInput {
 export interface NoteAnalysisResult {
   success: boolean
   annotatedNotes: string
+  error?: string
+}
+
+export interface NoteSummaryInput {
+  notes: string
+  context?: string // Course/verified content (optional)
+}
+
+export interface NoteSummaryResult {
+  success: boolean
+  summary: string
   error?: string
 }
 
@@ -120,6 +131,261 @@ export async function analyzeNotesWithAI(input: NoteAnalysisInput): Promise<Note
     return {
       success: false,
       annotatedNotes: '',
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    }
+  }
+}
+
+/**
+ * Summary prompt for generating structured summaries
+ */
+const SUMMARY_SYSTEM_PROMPT = `You are an expert academic summarizer. Your job is to create clear, comprehensive summaries of student notes.
+
+Guidelines:
+- Create a summary that is detailed, thorough, in-depth, and complex, while maintaining clarity and conciseness.
+- Cover all key points and main ideas from the original text, condensing the information into a clear and easy-to-understand format.
+- Include relevant details and examples that support the main ideas, while avoiding unnecessary information, redundancy, or speculation.
+- Rely strictly on the provided student notes and context; do not include external information.
+- Ensure the summary length is appropriate to the complexity and length of the original notes.
+- Organize the summary clearly using meaningful Markdown headings and subheadings.
+- Each section should be written in well-structured paragraph form.
+- Use bullet points sparingly and only when listing items.
+- Output must be valid Markdown.`
+
+function buildSummaryPrompt(input: NoteSummaryInput): string {
+  let prompt = ''
+  
+  if (input.context) {
+    prompt += `Given the following verified context information:\n\n${input.context}\n\n`
+    prompt += `Summarize the student notes enclosed between %% below, ensuring the summary is fully consistent with the context above.\n\n`
+  } else {
+    prompt += `Summarize the following student notes:\n\n`
+  }
+  
+  prompt += `%%\n${input.notes}\n%%\n\n`
+  prompt += `Create a well-organized summary using Markdown headings and paragraphs.`
+  
+  return prompt
+}
+
+/**
+ * Summarize notes using Google Gemini API
+ */
+export async function summarizeNotesWithAI(input: NoteSummaryInput): Promise<NoteSummaryResult> {
+  const apiKey = process.env.GEMINI_API_KEY
+  
+  if (!apiKey) {
+    return {
+      success: false,
+      summary: '',
+      error: 'Gemini API key not configured. Add GEMINI_API_KEY to your .env file.',
+    }
+  }
+
+  try {
+    const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash'
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              { text: SUMMARY_SYSTEM_PROMPT + '\n\n' + buildSummaryPrompt(input) }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.4,
+          maxOutputTokens: 4096,
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Gemini API error:', errorData)
+      return {
+        success: false,
+        summary: '',
+        error: `Gemini API error: ${errorData.error?.message || response.statusText}`,
+      }
+    }
+
+    const data = await response.json()
+    const summary = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+
+    if (!summary) {
+      return {
+        success: false,
+        summary: '',
+        error: 'No response from AI',
+      }
+    }
+
+    return {
+      success: true,
+      summary,
+    }
+  } catch (error) {
+    console.error('AI summary error:', error)
+    return {
+      success: false,
+      summary: '',
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    }
+  }
+}
+
+// === Professor Report Feature ===
+
+export interface ProfessorReportInput {
+  studentNotes: string[] // Array of notes from multiple students
+  classMaterials: string // Official class materials
+  courseTitle?: string
+}
+
+export interface ProfessorReportResult {
+  success: boolean
+  report: string
+  error?: string
+}
+
+const PROFESSOR_REPORT_PROMPT = `You are an expert educational analyst. Your task is to compare student notes with official class materials and identify patterns of misunderstanding across students.
+
+Perform the following analysis:
+
+1. Identify recurring conceptual errors or misconceptions.
+2. Detect important key ideas that students consistently failed to include.
+3. Highlight incorrect definitions, formulas, or explanations.
+4. Identify areas where students show partial understanding or confusion.
+5. Infer which topics may not have been communicated clearly in class.
+
+Focus on recurring patterns across multiple students rather than isolated mistakes. Base your reasoning strictly on evidence from the provided materials.
+
+Produce a structured report with the following sections:
+
+## Executive Summary
+Provide a concise high-level summary (5–8 sentences) describing the overall quality of student understanding, the main problem areas, and the most urgent instructional gaps.
+
+## Common Misconceptions
+List recurring incorrect ideas and explain why they are wrong using references to the class materials.
+
+## Missing Core Concepts
+Key ideas from the class materials that students are failing to capture.
+
+## Confusion Patterns
+Topics where students demonstrate mixed or partial understanding.
+
+## Instructional Recommendations
+Concrete, actionable suggestions for how the professor can clarify or reinforce these topics in future lectures.
+
+Guidelines:
+- Be concise, analytical, and evidence-based.
+- DO NOT make up anything. If you don't have enough information, say so.
+- Clearly tie every conclusion to comparisons between the notes and the class materials.
+- Use LaTeX ($..$ for inline, $$...$$ for display) wherever mathematical notation is needed.
+- Output must be valid Markdown.`
+
+function buildProfessorReportPrompt(input: ProfessorReportInput): string {
+  let prompt = ''
+  
+  if (input.courseTitle) {
+    prompt += `Course: ${input.courseTitle}\n\n`
+  }
+  
+  prompt += `CLASS MATERIALS:\n${input.classMaterials}\n\n`
+  prompt += `STUDENT NOTES (${input.studentNotes.length} students):\n\n`
+  
+  input.studentNotes.forEach((notes, index) => {
+    prompt += `--- Student ${index + 1} ---\n${notes}\n\n`
+  })
+  
+  prompt += `Analyze the student notes against the class materials and generate the professor report.`
+  
+  return prompt
+}
+
+/**
+ * Generate professor report comparing student notes against class materials
+ */
+export async function generateProfessorReport(input: ProfessorReportInput): Promise<ProfessorReportResult> {
+  const apiKey = process.env.GEMINI_API_KEY
+  
+  if (!apiKey) {
+    return {
+      success: false,
+      report: '',
+      error: 'Gemini API key not configured. Add GEMINI_API_KEY to your .env file.',
+    }
+  }
+
+  if (input.studentNotes.length === 0) {
+    return {
+      success: false,
+      report: '',
+      error: 'No student notes provided for analysis.',
+    }
+  }
+
+  try {
+    const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash'
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              { text: PROFESSOR_REPORT_PROMPT + '\n\n' + buildProfessorReportPrompt(input) }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.3, // Lower temp for more analytical output
+          maxOutputTokens: 8192,
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      console.error('Gemini API error:', errorData)
+      return {
+        success: false,
+        report: '',
+        error: `Gemini API error: ${errorData.error?.message || response.statusText}`,
+      }
+    }
+
+    const data = await response.json()
+    const report = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim()
+
+    if (!report) {
+      return {
+        success: false,
+        report: '',
+        error: 'No response from AI',
+      }
+    }
+
+    return {
+      success: true,
+      report,
+    }
+  } catch (error) {
+    console.error('AI professor report error:', error)
+    return {
+      success: false,
+      report: '',
       error: error instanceof Error ? error.message : 'Unknown error occurred',
     }
   }
