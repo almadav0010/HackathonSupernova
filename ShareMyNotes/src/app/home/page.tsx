@@ -9,6 +9,7 @@ import { appName, appDescription } from '@/lib/constants'
 
 
 export default function SubjectsPage() {
+
   const subjects = [
     { name: 'Linear Algebra', slug: 'linear-algebra' },
     { name: 'Calculus', slug: 'calculus' },
@@ -39,10 +40,12 @@ export default function SubjectsPage() {
         <h1 className="text-4xl font-bold mb-8 text-center text-text-primary">
           Choose a Subject
         </h1>
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-3 gap-8 justify-items-center">
+          {/*loops over every subject  and then creates a button for each subject*/}
           {subjects.map((subject) => (
+            
             <Link key={subject.slug} href={`/${subject.slug}`}>
-              <Button variant="subjects" size="subj">
+              <Button variant="subjects" size="subj" color='accent-blue'>
                 {subject.name}
               </Button>
             </Link>
