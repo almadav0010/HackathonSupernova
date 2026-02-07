@@ -6,6 +6,7 @@ import { Navbar } from '@/components/Navbar/Navbar'
 import ReactMarkdown from 'react-markdown'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
 import 'katex/dist/katex.min.css'
 
 export default function NotesPage() {
@@ -110,16 +111,14 @@ export default function NotesPage() {
               <div className="prose prose-sm max-w-none h-screen overflow-y-auto">
                 <ReactMarkdown
                   remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex]}
+                  rehypePlugins={[rehypeRaw, rehypeKatex]}
                   components={{
                     p: ({ node, ...props }) => <p className="text-text-primary mb-4" {...props} />,
                     h1: ({ node, ...props }) => <h1 className="text-3xl font-bold text-text-primary mb-4" {...props} />,
                     h2: ({ node, ...props }) => <h2 className="text-2xl font-bold text-text-primary mb-3" {...props} />,
                     h3: ({ node, ...props }) => <h3 className="text-xl font-bold text-text-primary mb-2" {...props} />,
-                    code: ({ node, inline, ...props }) => inline 
-                      ? <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono" {...props} />
-                      : <code className="block bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props} />,
-                    pre: ({ node, ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto" {...props} />,
+                    code: ({ node, ...props }) => <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono" {...props} />,
+                    pre: ({ node, ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props} />,
                   }}
                 >
                   {content}
