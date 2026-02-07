@@ -4,8 +4,11 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/Button/Button'
 import { appName } from '@/lib/constants'
+import { Icon } from '@/components/Icon/Icon'
 
-// Lecture-Daten für jedes Subject
+// hardcoded lecture data for every subject
+//the URL structire changes through the file structure int he app
+//[subjects] allows us to dynamically change the URL depending ont he subject
 const lectureData: Record<string, string[]> = {
   'linear-algebra': ['Vectors & Matrices', 'Eigenvalues', 'Linear Transformations', 'Determinants'],
   'calculus': ['Limits', 'Derivatives', 'Integrals', 'Series'],
@@ -44,7 +47,10 @@ export default function SubjectLecturesPage() {
         
         {/* Back Button */}
         <Link href="/home">
-          <Button variant="ghost" size="sm">← Back to Subjects</Button>
+          <Button variant="ghost" size="md"> 
+            <Icon name="chevron-left" size={20} className="mr-1" />
+            Back to Subjects
+          </Button>
         </Link>
         
         {/* Title */}
@@ -90,6 +96,14 @@ export default function SubjectLecturesPage() {
 this is a file insdie [subjects] folder and was made as a dynamic router to each fo the subjects pages in the website....
 
 basic structure and workings:
-- 
+- what this [subjects] folder does is that it creates a dynamic route for each subject, so that when the user clicks on a subject, they are taken to a page that lists all the lectures for that subject.
+- basic proces:
+    - ser clicks ona subject
+    - url becomes autoomatically to /subject-name
+    - [subjects]/page.tsx file loads
+    - userParams() --> in the specifc subject will come
+    - lectureData object is used to get the lectures for that subject
+    - subjectNames object is used to get the nice name for that subject
+    - page is rendered with the lectures for that subject
 
 */
