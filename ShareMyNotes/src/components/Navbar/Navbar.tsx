@@ -16,7 +16,7 @@ export function Navbar() {
         <div className="flex items-stretch h-14">
           {/* Back Button */}
           <Link 
-            href="/home" 
+            href="../" 
             className="flex items-center justify-center w-14 text-text-secondary hover:text-text-primary hover:bg-background-muted/50 transition-all duration-200 border-r border-border-light group"
           >
             <svg 
