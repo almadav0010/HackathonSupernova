@@ -56,7 +56,7 @@ export default function NotesPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write or paste your notes here. Use LaTeX: $x^2$ for inline..."
-                className="w-full h-screen p-6 text-text-primary placeholder-gray-400 focus:outline-none resize-none font-mono"
+                className="w-full h-screen p-6 text-text-primary placeholder-text-primary focus:outline-none resize-none font-mono"
               />
             </div>
           ) : (
@@ -74,10 +74,10 @@ export default function NotesPage() {
                     code: ({ className, children, ...props }) => {
                       const isInline = !className
                       return isInline 
-                        ? <code className="bg-gray-200 px-2 py-1 rounded text-sm font-mono" {...props}>{children}</code>
-                        : <code className="block bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props}>{children}</code>
+                        ? <code className="bg-background-muted px-2 py-1 rounded text-sm font-mono text-text-primary" {...props}>{children}</code>
+                        : <code className="block bg-background-subtle p-4 rounded mb-4 overflow-x-auto font-mono text-sm text-text-primary" {...props}>{children}</code>
                     },
-                    pre: ({ ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto" {...props} />,
+                    pre: ({ ...props }) => <pre className="bg-background-subtle p-4 rounded mb-4 overflow-x-auto" {...props} />,
                   }}
                 >
                   {content}

@@ -54,11 +54,11 @@ export default function SubjectLecturesPage() {
         </Link>
         
         {/* Title */}
-        <h1 className="text-4xl font-bold mt-8 mb-6 text-text-primary">
+        <h1 className="text-4xl font-bold mt-8 mb-6 text-primary">
           {subjectName}
         </h1>
         
-        <p className="text-text-secondary mb-8">
+        <p className="text-secondary mb-8">
           Choose a lecture to view notes:
         </p>
 
@@ -75,13 +75,13 @@ export default function SubjectLecturesPage() {
 
         {/* No lectures found */}
         {lectures.length === 0 && (
-          <p className="text-text-secondary">No lectures found for this subject.</p>
+          <p className="text-secondary">No lectures found for this subject.</p>
         )}
 
       </main>
 
       <footer className="px-6 py-8 border-t border-border mt-16">
-        <div className="max-w-6xl mx-auto text-center text-text-tertiary">
+        <div className="max-w-6xl mx-auto text-center text-tertiary">
           <p>© 2026 {appName}. Built with ❤️ at Supernova.</p>
         </div>
       </footer>

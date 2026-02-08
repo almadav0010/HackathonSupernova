@@ -274,12 +274,12 @@ export default function NotesPage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
+              <div className="flex items-center gap-2 text-sm text-primary mb-1">
                 <span>{subjectName}</span>
                 <Icon name="chevron-right" size={14} />
                 <span>{lectureName}</span>
               </div>
-              <h1 className="text-3xl font-bold text-text-primary">My Notes</h1>
+              <h1 className="text-3xl font-bold text-primary">My Notes</h1>
             </div>
 
             <div className="flex gap-2">
@@ -299,7 +299,7 @@ export default function NotesPage() {
               </button>
               <button
                 onClick={handleExport}
-                className="px-4 py-2 bg-stone-100 text-stone-800 border border-stone-300 rounded hover:bg-stone-200 font-medium shadow-sm flex items-center gap-2"
+                className="px-4 py-2 bg-stone-100 text-text-primary border border-stone-300 rounded hover:bg-stone-200 hover:text-text-primary-dark font-medium shadow-sm flex items-center gap-2"
               >
                 <Icon name="download" size={16} />
                 Export .txt
@@ -369,7 +369,7 @@ export default function NotesPage() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Write or paste your notes here. Use LaTeX: $x^2$ for inline..."
-                className="w-full h-screen p-6 text-text-primary placeholder-gray-400 focus:outline-none resize-none font-mono text-lg"
+                className="w-full h-screen p-6 text-text-primary placeholder-text-primary focus:outline-none resize-none font-mono text-lg"
               />
             </div>
           ) : (
@@ -401,10 +401,10 @@ export default function NotesPage() {
                     code: ({ className, children, ...props }) => {
                       const isInline = !className
                       return isInline 
-                        ? <code className="bg-gray-200 px-2 py-1 rounded text-base font-mono" {...props}>{children}</code>
-                        : <code className="block bg-gray-100 p-4 rounded mb-4 overflow-x-auto font-mono text-sm" {...props}>{children}</code>
+                        ? <code className="bg-background-muted px-2 py-1 rounded text-base font-mono text-text-primary" {...props}>{children}</code>
+                        : <code className="block bg-background-subtle p-4 rounded mb-4 overflow-x-auto font-mono text-sm text-text-primary" {...props}>{children}</code>
                     },
-                    pre: ({ ...props }) => <pre className="bg-gray-100 p-4 rounded mb-4 overflow-x-auto" {...props} />,
+                    pre: ({ ...props }) => <pre className="bg-background-subtle p-4 rounded mb-4 overflow-x-auto" {...props} />,
                     span: ({ children, style, ...props }) => {
                       const childText = String(children || '')
                       if (childText.startsWith('[') && childText.endsWith(']')) {
@@ -435,7 +435,7 @@ export default function NotesPage() {
                 <Icon name="zap" size={20} className="text-purple-600" />
                 AI Summary
               </h2>
-              <button onClick={() => setShowSummary(false)} className="text-gray-500 hover:text-gray-700">
+              <button onClick={() => setShowSummary(false)} className="text-text-primary hover:text-text-primary-dark">
                 <Icon name="x" size={20} />
               </button>
             </div>
@@ -462,7 +462,7 @@ export default function NotesPage() {
                 <Icon name="download" size={16} />
                 Export
               </button>
-              <button onClick={() => setShowSummary(false)} className="px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded hover:bg-gray-200 font-medium">
+              <button onClick={() => setShowSummary(false)} className="px-4 py-2 bg-background-subtle text-text-primary border border-border-light rounded hover:bg-background-muted hover:text-text-primary-dark font-medium">
                 Close
               </button>
             </div>

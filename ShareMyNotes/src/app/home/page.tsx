@@ -121,7 +121,7 @@ export default function SubjectsPage() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link href="/home" className="flex items-center gap-2">
             <Icon name="book" size={24} className="text-accent-blue" />
-            <span className="font-bold text-xl text-text-primary">{appName}</span>
+            <span className="font-bold text-xl text-primary">{appName}</span>
           </Link>
           <UserMenu />
         </div>
@@ -130,19 +130,19 @@ export default function SubjectsPage() {
       <main className="px-6 py-8 max-w-6xl mx-auto">
         {/* My Notes Section - Google Docs Style */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-text-primary flex items-center gap-2">
+          <h2 className="text-2xl font-bold mb-6 text-primary flex items-center gap-2">
             <Icon name="file-text" size={24} className="text-blue-500" />
             My Notes ({notes.length})
           </h2>
           
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Icon name="loader" size={32} className="animate-spin text-gray-400" />
+              <Icon name="loader" size={32} className="animate-spin text-primary" />
             </div>
           ) : notes.length === 0 ? (
             <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-              <Icon name="file-text" size={48} className="text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">No notes yet. Choose a subject below to start taking notes!</p>
+              <Icon name="file-text" size={48} className="text-primary mx-auto mb-3" />
+              <p className="text-primary">No notes yet. Choose a subject below to start taking notes!</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -155,7 +155,7 @@ export default function SubjectsPage() {
                   {/* Document Preview */}
                   <div className="flex-1 p-3 overflow-hidden">
                     <div className="h-full bg-gray-50 rounded border border-gray-100 p-2">
-                      <p className="text-[10px] text-gray-500 leading-relaxed line-clamp-[6]">
+                      <p className="text-[10px] text-primary leading-relaxed line-clamp-[6]">
                         {getPreviewText(note.content)}
                       </p>
                     </div>
@@ -168,10 +168,10 @@ export default function SubjectsPage() {
                         <Icon name="file-text" size={12} className="text-white" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-xs font-medium text-gray-900 truncate group-hover:text-blue-600">
+                        <h3 className="text-xs font-medium text-primary truncate group-hover:text-blue-600">
                           {note.title || 'Untitled'}
                         </h3>
-                        <p className="text-[10px] text-gray-500">
+                        <p className="text-[10px] text-primary">
                           {formatDate(note.updated_at)}
                         </p>
                       </div>
@@ -185,10 +185,10 @@ export default function SubjectsPage() {
 
         {/* Subjects Section */}
         <section>
-          <h1 className="text-4xl font-bold mb-8 text-center text-text-primary">
+          <h1 className="text-4xl font-bold mb-8 text-center text-primary">
             Choose a Subject
           </h1>
-          <h2 className="text-1xl font-light mb-5 text-center align-text-bottom text-text-secondary">
+          <h2 className="text-1xl font-light mb-5 text-center align-text-bottom text-secondary">
            to start taking notes!
           </h2>
           <div className="grid grid-cols-3 gap-8 justify-items-center">

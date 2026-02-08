@@ -10,11 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         // Paper-inspired warm neutral palette (from Destilify)
-        primary: '#5C5956',
+        primary: '#25256A',
         'primary-light': '#78756F',
         'primary-dark': '#3D3935',
-        secondary: '#F9F7F5',
+        'front': '#FF0000',
+        secondary: '#36368D',
         'secondary-dark': '#EBE7E3',
+        tetriary: '#5050AA',
+        'button-color': '#000000',
         accent: '#8A8580',
         'accent-green': '#7BA66B',
         'accent-sage': '#9DB88E',
@@ -22,7 +25,7 @@ const config: Config = {
         'text-primary': '#2D2A27',
         'text-secondary': '#5C5956',
         'text-tertiary': '#8A8580',
-        border: '#D6D2CD',
+        border: '#A6A2CD',
         'border-light': '#EBE7E3',
         background: '#FFFEFB',
         'background-subtle': '#F9F7F5',

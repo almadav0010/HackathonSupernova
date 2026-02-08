@@ -194,7 +194,7 @@ export function UploadsList({
   }
 
   const getScoreColor = (score: number | null | undefined): string => {
-    if (score === null || score === undefined) return 'bg-gray-100 text-gray-600'
+    if (score === null || score === undefined) return 'bg-background-subtle text-text-primary'
     if (score >= 80) return 'bg-green-100 text-green-700'
     if (score >= 60) return 'bg-yellow-100 text-yellow-700'
     return 'bg-red-100 text-red-700'
@@ -237,7 +237,7 @@ export function UploadsList({
                     </span>
                   )}
                   {!upload.feedback && (
-                    <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-xs font-medium rounded">
+                    <span className="px-2 py-0.5 bg-background-subtle text-text-primary text-xs font-medium rounded">
                       Pending
                     </span>
                   )}

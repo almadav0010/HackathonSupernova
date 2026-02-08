@@ -11,13 +11,13 @@ export function Navbar() {
   const isActive = (path: string) => pathname?.includes(path)
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
+    <nav className="sticky text-secondary top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-stretch h-14">
           {/* Back Button */}
           <Link 
             href="../" 
-            className="flex items-center justify-center w-14 text-text-secondary hover:text-text-primary hover:bg-background-muted/50 transition-all duration-200 border-r border-border-light group"
+            className="flex items-center justify-center w-14 text-secondary hover:text-primary hover:bg-background-muted/50 transition-all duration-200 border-r border-border-light group"
           >
             <svg 
               className="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform" 
@@ -60,13 +60,13 @@ function NavLink({
         border-r border-border-light last:border-r-0
         transition-all duration-200 relative
         ${isActive 
-          ? 'text-text-primary bg-background-subtle' 
-          : 'text-text-secondary hover:text-text-primary hover:bg-background-muted/30'
+          ? 'text-primary bg-background-subtle' 
+          : 'text-secondary hover:text-primary hover:bg-background-muted/30'
         }
       `}
     >
       <Icon name={icon} size={20} className={isActive ? 'text-accent-blue' : ''} />
-      <span className={`font-medium text-sm ${isActive ? 'text-text-primary' : ''}`}>
+      <span className={`font-medium text-sm ${isActive ? 'text-primary' : ''}`}>
         {label}
       </span>
       
